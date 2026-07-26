@@ -1,0 +1,8 @@
+{
+  "name": "שיר ופרח",
+  "short_name": "שיר ופרח",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF9F6",
+  "theme_color": "#2C3E1F"
+}

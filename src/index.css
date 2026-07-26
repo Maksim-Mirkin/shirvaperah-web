@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 42 29% 97%;
+    --foreground: 95 34% 18%;
+    --card: 0 0% 100%;
+    --card-foreground: 95 34% 18%;
+    --border: 94 12% 84%;
+    --radius: 0.5rem;
+    --font-sans: 'Heebo', sans-serif;
+    --font-serif: 'Cormorant Garamond', serif;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+  }
+
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+}
