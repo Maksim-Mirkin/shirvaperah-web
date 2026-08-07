@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { hero } from '@/content/site-content';
 
-function FlowerIcon() {
+function SparklesIcon() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.7">
-      <path d="M12 7.5C9.5 5.7 9.7 2.7 12 2c2.3.7 2.5 3.7 0 5.5Z" />
-      <path d="M16.5 12c1.8-2.5 4.8-2.3 5.5 0-.7 2.3-3.7 2.5-5.5 0Z" />
-      <path d="M12 16.5c2.5 1.8 2.3 4.8 0 5.5-2.3-.7-2.5-3.7 0-5.5Z" />
-      <path d="M7.5 12C5.7 14.5 2.7 14.3 2 12c.7-2.3 3.7-2.5 5.5 0Z" />
-      <circle cx="12" cy="12" r="3.2" />
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+      <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0Z" />
+      <path d="M20 3v4M22 5h-4M4 17v2M5 18H3" />
     </svg>
   );
 }
@@ -37,7 +34,7 @@ export default function HeroSection() {
       <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 px-6 py-8 lg:grid-cols-2 lg:py-20">
         <div className="order-2 text-center lg:order-1 lg:text-right">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#d4a5a5]/55 bg-white/80 px-4 py-1.5 text-sm font-bold tracking-wide text-[#a95f68] shadow-sm backdrop-blur-sm">
-            <FlowerIcon />
+            <SparklesIcon />
             <span>{hero.eyebrow}</span>
           </div>
           <h1 className="mt-6 text-5xl font-bold leading-[1.1] tracking-tight text-[#2c3e1f] sm:text-7xl lg:text-8xl">

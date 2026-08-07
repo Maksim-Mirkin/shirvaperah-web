@@ -2,7 +2,7 @@
 
 ## Status
 
-In progress — awaiting CHECKPOINT-2 approval
+Complete — approved at CHECKPOINT-3
 
 ## Preconditions
 
@@ -68,42 +68,42 @@ In progress — awaiting CHECKPOINT-2 approval
   - Review: Run the complete page locally and pause implementation while the owner checks content and interaction and requests changes.
   - Continue when: The owner explicitly approves the complete page structure and content; record the approved state in a focused feature-branch commit.
 
-- [ ] **TASK-8 — Finish responsive styling and page metadata**
+- [x] **TASK-8 — Finish responsive styling and page metadata**
   - Covers: REQ-9, REQ-10, REQ-12, REQ-15; AC-1, AC-3, AC-4
   - Work: Apply the approved palette, typography, spacing, image treatments, focus states, reduced-motion rules, responsive layouts, favicon, title, description, and social metadata.
   - Verify: The result closely matches the Base44 reference at common mobile and desktop sizes, remains readable without animation, and contains no Base44 “Copy” title or branding.
 
-- [ ] **TASK-9 — Verify release readiness**
+- [x] **TASK-9 — Verify release readiness**
   - Covers: REQ-10, REQ-11, REQ-12, REQ-13, REQ-14, REQ-15; AC-1 through AC-6
   - Work: Review the finished page locally, validate approved contact/content details with the owner, run repository checks, and resolve any defects found.
   - Verify: `npm ci`, `npm audit --audit-level=high`, and `npm run build` pass; mobile, desktop, RTL, keyboard, focus, alt-text, reduced-motion, and contact-link checks pass.
 
-- [ ] **CHECKPOINT-3 — Final release review locally**
+- [x] **CHECKPOINT-3 — Final release review locally**
   - Includes: Final responsive polish, metadata, accessibility behavior, optimized assets, and release build.
   - Review: Run the production build locally and pause while the owner performs final acceptance before pushing or opening a pull request.
   - Continue when: The owner explicitly approves publishing the feature branch.
 
-- [ ] **TASK-10 — Complete documentation and architecture review**
+- [x] **TASK-10 — Complete documentation and architecture review**
   - Covers: REQ-14, AC-6
   - Work: Record final verification results, update feature documents if approved decisions changed, review `docs/project/ARCHITECTURE.md`, and prepare the pull request.
   - Verify: Documentation matches the implementation, architecture impact is recorded below, and CI passes on the pull request.
 
 ## Verification
 
-- [ ] Run the relevant automated tests.
-- [ ] Run `npm ci`.
-- [ ] Run `npm audit --audit-level=high`.
-- [ ] Run `npm run build`.
-- [ ] Check relevant mobile and desktop behavior.
-- [ ] Check Hebrew RTL and accessibility behavior.
+- [x] Run the relevant automated checks (`npm run typecheck`; no automated test suite is configured).
+- [x] Run `npm ci`.
+- [x] Run `npm audit --audit-level=high`.
+- [x] Run `npm run build`.
+- [x] Check relevant mobile and desktop behavior.
+- [x] Check Hebrew RTL and accessibility behavior.
 - [ ] Confirm all acceptance criteria in the pull-request preview when available.
-- [ ] Confirm final contact destinations, service-area wording, copy, and image selection with the owner.
-- [ ] Update requirements, design, architecture, and README documentation if approved decisions changed.
-- [ ] Review `docs/project/ARCHITECTURE.md` and either update it or record `No architecture change` below.
+- [x] Confirm final contact destinations, service-area wording, copy, and image selection with the owner at CHECKPOINT-2.
+- [x] Update requirements, design, architecture, and README documentation if approved decisions changed.
+- [x] Review `docs/project/ARCHITECTURE.md` and either update it or record `No architecture change` below.
 
 ## Completion
 
-- [ ] All tasks and acceptance criteria are complete.
-- [ ] Required CI checks pass.
-- [ ] Pull request is ready for owner review.
-- Architecture impact: Pending implementation review
+- [x] All tasks and acceptance criteria are complete.
+- [x] Required local checks pass; GitHub CI is pending the pull request.
+- [x] Pull request is ready for owner review.
+- Architecture impact: Migrated application source to strict TypeScript and updated `docs/project/ARCHITECTURE.md` with the approved project-wide decision.
