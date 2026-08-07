@@ -28,13 +28,13 @@ export default function HeroSection() {
   }, [activeImage]);
 
   return (
-    <section id="home" className="relative flex min-h-[90vh] scroll-mt-24 items-center justify-center overflow-hidden pt-24">
+    <section id="home" className="relative flex min-h-[90vh] scroll-mt-24 items-start justify-center overflow-hidden pt-28 lg:items-center lg:pt-24">
       <div className="absolute inset-0 z-0" aria-hidden="true">
         <img src={hero.backgroundImage} alt="" className="h-full w-full object-cover object-center" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#f9f7f2]/70 via-[#f9f7f2]/60 to-[#f9f7f2]/75" />
       </div>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-2">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 px-6 py-8 lg:grid-cols-2 lg:py-20">
         <div className="order-2 text-center lg:order-1 lg:text-right">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#d4a5a5]/55 bg-white/80 px-4 py-1.5 text-sm font-bold tracking-wide text-[#a95f68] shadow-sm backdrop-blur-sm">
             <FlowerIcon />

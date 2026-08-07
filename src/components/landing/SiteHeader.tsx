@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import type { MouseEvent } from 'react';
 import { contact, logo } from '@/content/site-content';
 
-function MenuIcon({ open }) {
+function MenuIcon({ open }: { open: boolean }) {
   return open ? (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
       <path d="M6 6l12 12M18 6 6 18" />
@@ -45,20 +46,33 @@ export default function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const updateHeader = () => setScrolled(window.scrollY > 20);
+    const updateHeader = () => {
+      const hero = document.getElementById('home');
+      const threshold = hero ? hero.offsetTop + hero.offsetHeight - 96 : 56;
+      setScrolled(window.scrollY > threshold);
+    };
     updateHeader();
     window.addEventListener('scroll', updateHeader, { passive: true });
-    return () => window.removeEventListener('scroll', updateHeader);
+    window.addEventListener('resize', updateHeader);
+    return () => {
+      window.removeEventListener('scroll', updateHeader);
+      window.removeEventListener('resize', updateHeader);
+    };
   }, []);
 
   useEffect(() => {
     if (!menuOpen) return undefined;
-    const closeOnEscape = (event) => event.key === 'Escape' && setMenuOpen(false);
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => event.key === 'Escape' && setMenuOpen(false);
+    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', closeOnEscape);
-    return () => window.removeEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
   }, [menuOpen]);
 
-  const scrollToTop = (event) => {
+  const scrollToTop = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
@@ -67,8 +81,9 @@ export default function SiteHeader() {
   };
 
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled || menuOpen ? 'bg-white/90 py-3 shadow-sm backdrop-blur-md' : 'bg-transparent py-6'}`}>
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
+    <>
+      <header className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${scrolled || menuOpen ? 'border-stone-200/70 bg-white/85 py-3 shadow-sm backdrop-blur-md' : 'border-transparent bg-transparent py-6'}`}>
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
         <div className="flex items-center gap-8">
           <div className="hidden items-center gap-7 md:flex">
             <a href={contact.instagramHref} target="_blank" rel="noopener noreferrer" className="focus-ring flex items-center gap-1.5 rounded-md text-sm font-medium text-[#5c6b4a] transition hover:text-[#d4a5a5]">
@@ -94,10 +109,11 @@ export default function SiteHeader() {
         <a href="/" onClick={scrollToTop} className="focus-ring rounded-full" aria-label="שיר ופרח — דף הבית">
           <img src={logo} alt="שיר ופרח" className="h-16 w-16 rounded-full border border-stone-200 object-cover shadow-sm transition hover:scale-105 md:h-20 md:w-20" />
         </a>
-      </div>
+        </div>
+      </header>
 
-      <div id="mobile-contact-menu" hidden={!menuOpen} className="fixed inset-0 -z-10 bg-white px-6 pt-32 md:hidden">
-        <nav aria-label="אפשרויות יצירת קשר" className="flex flex-col gap-6 text-center">
+      <div id="mobile-contact-menu" aria-hidden={!menuOpen} className={`fixed inset-0 z-40 min-h-[100dvh] bg-white/95 px-6 pt-32 backdrop-blur-md transition-all duration-300 md:hidden ${menuOpen ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-4 opacity-0'}`}>
+        <nav aria-label="אפשרויות יצירת קשר" className={`flex flex-col gap-6 text-center transition-all delay-75 duration-300 ${menuOpen ? 'translate-y-0 opacity-100' : '-translate-y-3 opacity-0'}`}>
           <a href={contact.instagramHref} target="_blank" rel="noopener noreferrer" className="focus-ring rounded-lg py-2 text-xl font-medium" onClick={() => setMenuOpen(false)}>
             Instagram
           </a>
@@ -110,6 +126,6 @@ export default function SiteHeader() {
           </a>
         </nav>
       </div>
-    </header>
+    </>
   );
 }

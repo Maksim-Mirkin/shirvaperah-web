@@ -68,9 +68,9 @@ App
 
 - Section components live in `src/components/landing/`.
 - Reusable primitives that are not landing-page-specific remain in `src/components/ui/`.
-- Business copy, contact destinations, services, and gallery metadata live in `src/content/site-content.js`.
+- Business copy, contact destinations, services, and gallery metadata live in `src/content/site-content.ts`.
 - Optimized images live in `src/assets/images/` and are imported by the content module.
-- `Home.jsx` composes sections and owns no business data.
+- `Home.tsx` composes sections and owns no business data.
 
 The existing Base44-specific authentication, query-client, toaster, and multi-page configuration are unnecessary for this static public page and will be removed if no current landing-page requirement uses them. React and Vite remain the runtime and build foundation.
 

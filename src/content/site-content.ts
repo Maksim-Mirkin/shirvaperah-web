@@ -44,7 +44,7 @@ export const galleryCategories = [
   {
     id: 'bouquets',
     label: 'זרי פרחים',
-    images: [bouquet01, bouquet02, bouquet03, bouquet04],
+    images: [bouquet01, bouquet02, bouquet03, bouquet04, hero01, hero02, hero03, hero04, hero05],
   },
   {
     id: 'tables',

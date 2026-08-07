@@ -52,6 +52,14 @@
   .focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d09296] focus-visible:ring-offset-2 focus-visible:ring-offset-[#faf9f6];
   }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

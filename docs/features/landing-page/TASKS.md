@@ -2,7 +2,7 @@
 
 ## Status
 
-In progress — awaiting CHECKPOINT-1 approval
+In progress — awaiting CHECKPOINT-2 approval
 
 ## Preconditions
 
@@ -43,22 +43,27 @@ In progress — awaiting CHECKPOINT-1 approval
   - Review: Run the site locally and pause implementation while the owner checks mobile and desktop appearance and requests changes.
   - Continue when: The owner explicitly approves the first screen; record the approved state in a focused feature-branch commit.
 
-- [ ] **TASK-5 — Build the gallery**
+- [x] **TASK-5 — Build the gallery**
   - Covers: REQ-4, REQ-9, REQ-10, REQ-11, REQ-12, REQ-15; AC-2, AC-3, AC-4
   - Work: Implement the three approved category filters and responsive local-image grid with correct selected-state semantics and reduced-motion behavior.
   - Verify: Each filter reveals the correct photographs, reports its state with `aria-pressed`, and creates no clipped content or keyboard trap.
 
-- [ ] **TASK-6 — Build services and about sections**
+- [x] **TASK-6 — Build services and about sections**
   - Covers: REQ-5, REQ-6, REQ-9, REQ-10, REQ-11, REQ-15; AC-2, AC-3
   - Work: Implement the four approved service cards and the business-story section with the approved photograph and quotation.
   - Verify: All approved content is readable in Hebrew RTL and remains complete with animation disabled.
 
-- [ ] **TASK-7 — Build contact footer**
+- [x] **TASK-7 — Build contact footer**
   - Covers: REQ-7, REQ-8, REQ-9, REQ-10, REQ-12; AC-2, AC-3, AC-4, AC-5
   - Work: Implement WhatsApp and telephone actions, Instagram, service area, and copyright content using semantic links and visible focus styles.
   - Verify: Each link has the correct interaction type and destination and is usable by keyboard and touch.
 
-- [ ] **CHECKPOINT-2 — Review the complete page locally**
+- [x] **TASK-7A — Migrate the client source to TypeScript**
+  - Covers: Project-wide maintainability and safer implementation before the landing page grows further.
+  - Work: Convert React and content source files to `.tsx`/`.ts`, enable strict TypeScript checking, and document the project-wide decision in the architecture.
+  - Verify: `npm run typecheck` and `npm run build` pass, and no JavaScript source files remain under `src/`.
+
+- [x] **CHECKPOINT-2 — Review the complete page locally**
   - Includes: Gallery and filters, services, about content, contact footer, section order, copy, photographs, and contact destinations.
   - Review: Run the complete page locally and pause implementation while the owner checks content and interaction and requests changes.
   - Continue when: The owner explicitly approves the complete page structure and content; record the approved state in a focused feature-branch commit.
