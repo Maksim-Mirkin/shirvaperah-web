@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Approved
 
 ## Problem
 
@@ -97,16 +97,16 @@ The first release should reproduce the reference's structure, content, photograp
 - The current client-only React/Vite architecture must be preserved unless a separate architectural change is approved.
 - Hosting and the production domain have not yet been selected.
 
-## Open questions
+## Resolved decisions
 
-- Which services should appear in the final services section?
-- Which contact channels should be primary and secondary?
-- Should the gallery filters remain in the first release?
-- What final service area should be displayed?
-- Which hosting provider and domain should be used?
+- The services section will initially reproduce the four services published on the Base44 reference: custom bouquets, floral arrangements for events, bar/bat mitzvah decoration, and flower-arranging workshops.
+- WhatsApp is the primary contact action. Telephone and Instagram are secondary contact channels.
+- The first release retains the three gallery filters published on the reference: bouquets, table arrangements, and floral designs.
+- The first release uses the currently published service-area wording: Tivon and the surrounding area, with deliveries available. The owner will verify the wording before production release.
+- Hosting and production-domain configuration are separate release-infrastructure decisions and do not block landing-page design or local implementation.
 
 ## Approval
 
 - Owner: Maksim Mirkin
-- Status: Draft
+- Status: Approved
 - Date: 2026-08-07

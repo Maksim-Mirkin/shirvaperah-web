@@ -2,16 +2,15 @@
 
 Public web client for the Shir VaPerah project.
 
-This repository starts with a clean history and contains only the current React client. The previous private full-stack project and its history are not included.
+This repository contains the public, client-only website for Shir VaPerah. The previous private full-stack project and its history are not included.
 
 ## Current status
 
-- Minimal Hebrew RTL home page
-- Responsive React/Vite foundation
-- TanStack Query configured
-- Tailwind CSS styling
-- Temporary local authentication and toast placeholders
-- No backend or database integration
+- Single-page Hebrew RTL landing page
+- Responsive React and strict TypeScript implementation
+- Vite build tooling and Tailwind CSS styling
+- Local business photography and static content
+- No backend, database, authentication, or persistent user data
 
 ## Requirements
 
@@ -31,7 +30,8 @@ Open the URL printed by Vite, normally `http://localhost:5173`.
 
 ```bash
 npm run build
-npm audit
+npm run typecheck
+npm audit --audit-level=high
 ```
 
 ## Production preview
