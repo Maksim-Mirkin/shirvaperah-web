@@ -1,4 +1,4 @@
-# Codex boundaries
+# Codex workflow and boundaries
 
 These instructions apply to the entire repository.
 
@@ -8,6 +8,41 @@ These instructions apply to the entire repository.
 - Do not add a server, database, authentication provider, deployment target, or external service without explicit user approval.
 - Keep reusable UI in `src/components/`, pages in `src/pages/`, and shared helpers in `src/lib/`.
 - Preserve Hebrew RTL support unless a redesign explicitly changes the language direction.
+
+## Source of truth
+
+- Project-wide product requirements live in `docs/project/REQUIREMENTS.md`.
+- Project-wide technical decisions and system boundaries live in `docs/project/ARCHITECTURE.md`.
+- Feature specifications live in `docs/features/<feature-name>/`.
+- When code and documentation disagree, stop and surface the conflict. Do not silently redefine the requirement or architecture.
+
+## Planning workflow
+
+Use the following workflow for substantive features:
+
+1. Write and validate `REQUIREMENTS.md`.
+2. Write `DESIGN.md` against the accepted requirements.
+3. Write `TASKS.md` from the accepted requirements and design.
+4. Implement tasks on a focused feature branch.
+5. Verify the acceptance criteria and update the specification if an approved decision changed.
+6. Review `docs/project/ARCHITECTURE.md`; update it when the feature changed project-wide architecture, and record "No architecture change" in the feature tasks when it did not.
+7. Open a pull request.
+
+A visual exploration may begin with a design concept, but confirmed requirements must exist before tasks or implementation:
+
+```text
+design concept -> requirements -> final design -> tasks -> implementation
+```
+
+Rules for the workflow:
+
+- Do not implement a substantive feature before its requirements and design are agreed.
+- Do not generate implementation tasks while requirements or design contain unresolved blocking questions.
+- Every task must reference the requirement or acceptance criterion it satisfies.
+- Do not silently expand scope. Record suggestions under "Out of scope" or "Open questions" for user review.
+- Keep requirements focused on outcomes, design focused on behavior and technical choices, and tasks focused on executable work.
+- Every feature must finish with an architecture-impact review. Do not edit `ARCHITECTURE.md` merely to restate feature-local implementation details.
+- Small typo, documentation-only, dependency-maintenance, and urgent security fixes may use a shortened workflow when the change is obvious and low risk.
 
 ## Safety
 
@@ -21,9 +56,9 @@ These instructions apply to the entire repository.
 Before publishing a change, run:
 
 ```bash
-npm install
+npm ci
 npm run build
-npm audit
+npm audit --audit-level=high
 ```
 
 - The production build must pass.
@@ -32,6 +67,10 @@ npm audit
 
 ## Git workflow
 
+- Keep `main` as the single permanent production branch.
 - Use a focused branch and pull request for substantive changes.
+- Use temporary `feature/*`, `fix/*`, or automated dependency branches and delete them after merge.
 - Use concise commit messages.
 - Do not bypass required checks or unresolved review discussions.
+- Deploy pull requests to preview environments when hosting is configured; deploy production only from `main`.
+- Roll back production with a revert commit or a previously verified hosting deployment, then reconcile `main` immediately.
