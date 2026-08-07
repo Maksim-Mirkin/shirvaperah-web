@@ -44,6 +44,16 @@ Rules for the workflow:
 - Every feature must finish with an architecture-impact review. Do not edit `ARCHITECTURE.md` merely to restate feature-local implementation details.
 - Small typo, documentation-only, dependency-maintenance, and urgent security fixes may use a shortened workflow when the change is obvious and low risk.
 
+## Execution and owner checkpoints
+
+- Implementation tasks are agent-owned. Execute consecutive tasks autonomously in the documented order without asking the owner to approve each task.
+- Owner review happens only at an explicit `CHECKPOINT` in the feature `TASKS.md`, unless progress is genuinely blocked by missing authority, missing required information, or a safety concern.
+- Complete every task before the next checkpoint, run the checkpoint's stated verification, start the local site when visual review is required, and then stop for owner feedback.
+- Do not start work after a checkpoint until the owner explicitly approves continuing.
+- Apply requested checkpoint changes, re-run the checkpoint verification, and pause again until approved.
+- Routine implementation choices that stay inside approved requirements and design do not require additional owner confirmation.
+- Commits, pushes, and pull requests follow the feature's documented checkpoint instructions. Never publish merely because an implementation task finished.
+
 ## Safety
 
 - Never commit secrets, credentials, tokens, private keys, personal data, `.env` files, `node_modules/`, or `dist/`.
