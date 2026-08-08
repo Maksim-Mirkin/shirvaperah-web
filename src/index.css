@@ -10,8 +10,8 @@
     --card-foreground: 95 34% 18%;
     --border: 94 12% 84%;
     --radius: 0.5rem;
-    --font-sans: 'Heebo', sans-serif;
-    --font-serif: 'Cormorant Garamond', serif;
+    --font-sans: 'Heebo Variable', sans-serif;
+    --font-serif: 'Heebo Variable', sans-serif;
   }
 
   * {
@@ -46,6 +46,20 @@
   .font-serif {
     font-family: var(--font-serif);
   }
+
+  .font-logo {
+    font-family: 'Gveret Levin', cursive;
+    font-synthesis: none;
+    font-weight: 400;
+  }
+
+  .font-logo-thin {
+    filter: url('#thin-logo-text');
+  }
+
+  .font-logo-thinner {
+    filter: url('#thinner-logo-text');
+  }
 }
 
 @layer utilities {
@@ -59,6 +73,31 @@
 
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .gallery-card-image {
+    transform: scale(1.1);
+  }
+
+  .group:hover .gallery-card-overlay {
+    background-color: rgb(0 0 0 / 0.4);
+  }
+
+  .group:hover .gallery-card-expand {
+    opacity: 1;
+  }
+
+  .service-card:hover {
+    transform: translateY(-0.75rem) scale(1.02);
+    box-shadow: 0 25px 50px -12px rgb(44 62 31 / 0.1);
+  }
+
+  .service-card:hover .service-icon {
+    transform: scale(1.15);
+    color: #2c3e1f;
+    box-shadow: 0 4px 6px -1px rgb(44 62 31 / 0.1);
   }
 }
 

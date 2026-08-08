@@ -10,12 +10,13 @@ Shir VaPerah Web is a client-only React single-page application written in stric
 
 ```text
 Browser
+  -> Cloudflare Pages / CDN
   -> Vite-built static assets
   -> React application
   -> pages, components, and local client helpers
 ```
 
-There is currently no backend, database, real authentication provider, or approved external runtime service.
+There is currently no backend, database, real authentication provider, or application runtime service. The static production build is hosted and delivered by Cloudflare Pages.
 
 ## Repository structure
 
@@ -59,6 +60,7 @@ The current application renders one landing page at the root URL. In-page sectio
 - TypeScript performs strict static checking through `npm run typecheck` without emitting files.
 - Vite produces the static production bundle.
 - GitHub Actions installs locked dependencies, audits them, and builds the bundle.
+- Cloudflare Pages builds successful changes from protected `main` and serves the generated `dist/` directory.
 - Planned quality improvements include linting and focused automated tests before production launch.
 
 ## Branching and deployment model
@@ -66,14 +68,25 @@ The current application renders one landing page at the root URL. In-page sectio
 ```text
 temporary branch
   -> pull request
-  -> CI and preview deployment
+  -> GitHub CI
   -> protected main
-  -> production deployment
+  -> Cloudflare Pages production deployment
 ```
 
 - `main` is the only permanent production branch.
 - Preview and production are deployment environments, not permanent Git branches.
 - Production rollback uses a Git revert or a previously verified deployment; repository state and production must then be reconciled.
+
+## Decision: Cloudflare Pages static delivery
+
+- **Date:** 2026-08-08
+- **Context:** The approved client-only site needs stable HTTPS hosting, main-only automatic releases, deployment history, and rollback without introducing an application server.
+- **Decision:** Cloudflare Pages builds `main` with `npm run typecheck && npm run build`, publishes `dist/`, and serves the live site at `https://shirvaperah-web.pages.dev`. Feature-branch preview deployments are disabled.
+- **Tradeoffs:** Hosting and DNS depend on Cloudflare, while the application remains portable static output with no Cloudflare-specific runtime code.
+- **Security and privacy:** No Cloudflare credentials or visitor-data pipeline are stored in the repository. The owner-controlled account retains recovery, two-factor authentication, DNS, and rollback access.
+- **Operations and rollback:** A failed build leaves the previous production deployment active. Restore a prior verified deployment for immediate recovery and reconcile `main` with a revert or corrective pull request.
+- **Domain:** `shirvaperah.co.il` has been ordered through SPD and will be attached after registrar activation and Cloudflare nameserver configuration.
+- **Approval:** Approved by the repository owner during the deployment feature on 2026-08-08.
 
 ## Architectural decision process
 

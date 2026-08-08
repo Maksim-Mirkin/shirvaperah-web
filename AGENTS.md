@@ -53,6 +53,7 @@ Rules for the workflow:
 - Apply requested checkpoint changes, re-run the checkpoint verification, and pause again until approved.
 - Routine implementation choices that stay inside approved requirements and design do not require additional owner confirmation.
 - Commits, pushes, and pull requests follow the feature's documented checkpoint instructions. Never publish merely because an implementation task finished.
+- After every user-visible UI or content change, update the running local build before reporting completion and include both review URLs in the response: the desktop URL (`http://127.0.0.1:4173/`) and the same-network phone URL (`http://10.0.0.4:4173/`). If either address changes, report the new address instead.
 
 ## Safety
 

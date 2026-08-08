@@ -13,6 +13,15 @@ type DragState = {
   image: GalleryImage | null;
 };
 
+function shuffleImages(images: readonly GalleryImage[]) {
+  const shuffled = [...images];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
 function ArrowIcon({ direction }: { direction: 'left' | 'right' }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
@@ -36,15 +45,19 @@ export default function GallerySection() {
   const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
   const [lightboxVisible, setLightboxVisible] = useState(false);
   const [galleryInView, setGalleryInView] = useState(false);
+  const [imagesReady, setImagesReady] = useState(false);
+  const [allImages] = useState(() => shuffleImages(galleryCategories[0].images));
   const sectionRef = useRef<HTMLElement>(null);
+  const carouselViewportRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const transitionTimer = useRef<number | undefined>(undefined);
   const lightboxTimer = useRef<number | undefined>(undefined);
   const dragState = useRef<DragState>({ active: false, moved: false, startX: 0, startScroll: 0, image: null });
   const selectedCategory = galleryCategories.find((category) => category.id === activeCategory) ?? galleryCategories[0];
+  const selectedImages = selectedCategory.id === 'all' ? allImages : selectedCategory.images;
   const cardStep = 316;
-  const loopWidth = selectedCategory.images.length * cardStep;
-  const loopImages = [0, 1, 2].flatMap((copy) => selectedCategory.images.map((image, index) => ({ copy, image, index })));
+  const loopWidth = selectedImages.length * cardStep;
+  const loopImages = [0, 1, 2].flatMap((copy) => selectedImages.map((image, index) => ({ copy, image, index })));
 
   const openLightbox = (image: GalleryImage) => {
     window.clearTimeout(lightboxTimer.current);
@@ -71,8 +84,8 @@ export default function GallerySection() {
   }, []);
 
   useLayoutEffect(() => {
-    if (carouselRef.current) carouselRef.current.scrollLeft = -loopWidth;
-  }, [activeCategory, loopWidth]);
+    if (imagesReady && carouselRef.current) carouselRef.current.scrollLeft = -loopWidth;
+  }, [activeCategory, imagesReady, loopWidth]);
 
   const selectCategory = (categoryId: string) => {
     if (categoryId === activeCategory) return;
@@ -113,6 +126,21 @@ export default function GallerySection() {
   }, []);
 
   useEffect(() => {
+    const carouselViewport = carouselViewportRef.current;
+    if (!carouselViewport || imagesReady) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setImagesReady(true);
+        observer.disconnect();
+      },
+      { rootMargin: '160px 0px', threshold: 0.01 },
+    );
+    observer.observe(carouselViewport);
+    return () => observer.disconnect();
+  }, [imagesReady]);
+
+  useEffect(() => {
     if (!galleryInView || lightboxImage) return undefined;
     const handleArrowKeys = (event: KeyboardEvent) => {
       if (event.target instanceof Element && event.target.matches('input, textarea, select')) return;
@@ -134,7 +162,7 @@ export default function GallerySection() {
     dragState.current = {
       active: true,
       image: galleryItem
-        ? selectedCategory.images[Number(galleryItem.dataset.galleryIndex)]
+        ? selectedImages[Number(galleryItem.dataset.galleryIndex)]
         : null,
       moved: false,
       startX: event.clientX,
@@ -156,12 +184,8 @@ export default function GallerySection() {
 
   const stopDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (!dragState.current.active) return;
-    const imageToOpen = event.pointerType === 'mouse' && !dragState.current.moved
-      ? dragState.current.image
-      : null;
     dragState.current.active = false;
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    if (imageToOpen) openLightbox(imageToOpen);
   };
 
   const cancelDrag = () => {
@@ -186,7 +210,7 @@ export default function GallerySection() {
           description="הצצה קטנה ליצירות הפרחים שלנו. כל זר נשזר באהבה ותשומת לב לפרטים הקטנים."
         />
 
-        <div className="mt-10 flex flex-wrap justify-center gap-4" role="group" aria-label="סינון גלריה">
+        <div className="mx-auto mt-10 grid w-full max-w-md grid-cols-2 gap-3 sm:flex sm:max-w-none sm:flex-wrap sm:justify-center sm:gap-4" role="group" aria-label="סינון גלריה">
           {galleryCategories.map((category) => {
             const selected = category.id === activeCategory;
             return (
@@ -195,7 +219,7 @@ export default function GallerySection() {
                 type="button"
                 aria-pressed={selected}
                 onClick={() => selectCategory(category.id)}
-                className={`focus-ring min-h-11 rounded-full border px-6 py-2.5 text-base font-medium transition-all duration-300 ${selected ? 'scale-105 border-[#2c3e1f] bg-[#2c3e1f] text-white shadow-lg shadow-[#2c3e1f]/20' : 'border-[#e8d5c4] bg-white text-[#5c6b4a] hover:border-[#d4a5a5] hover:text-[#2c3e1f]'}`}
+                className={`focus-ring min-h-11 w-full whitespace-nowrap rounded-full border px-3 py-2.5 text-base font-medium transition-all duration-300 sm:w-auto sm:px-6 ${selected ? 'scale-[1.03] border-[#2c3e1f] bg-[#2c3e1f] text-white shadow-lg shadow-[#2c3e1f]/20 sm:scale-105' : 'border-[#e8d5c4] bg-white text-[#5c6b4a] hover:border-[#d4a5a5] hover:text-[#2c3e1f]'}`}
               >
                 {category.label}
               </button>
@@ -203,38 +227,43 @@ export default function GallerySection() {
           })}
         </div>
 
-        <div className="relative mt-12">
+        <div ref={carouselViewportRef} className="relative mt-12 min-h-[min(375px,106.25vw)]">
           <div
             ref={carouselRef}
             className={`no-scrollbar flex cursor-grab gap-4 overflow-x-auto pb-3 transition-all duration-300 active:cursor-grabbing ${visible ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}`}
             aria-live="polite"
+            aria-busy={!imagesReady}
             onPointerDown={startDrag}
             onPointerMove={dragCarousel}
             onPointerUp={stopDrag}
             onPointerCancel={stopDrag}
             onLostPointerCapture={cancelDrag}
             onScroll={keepCarouselLooped}
-            style={{ touchAction: 'pan-y' }}
+            style={{ touchAction: 'auto' }}
           >
-            {loopImages.map(({ copy, image, index }) => (
+            {imagesReady ? loopImages.map(({ copy, image, index }) => (
               <button
                 key={`${selectedCategory.id}-${copy}-${image}`}
                 type="button"
-                onClick={(event) => {
-                  if ((event.nativeEvent as PointerEvent).pointerType !== 'mouse') openLightbox(image);
+                onClick={() => {
+                  if (dragState.current.moved) {
+                    dragState.current.moved = false;
+                    return;
+                  }
+                  openLightbox(image);
                 }}
                 className="focus-ring group relative aspect-[4/5] w-[min(300px,85vw)] flex-none overflow-hidden rounded-2xl bg-[#e8d5c4]"
-                aria-label={`פתיחת תמונה ${index + 1} מתוך ${selectedCategory.images.length}`}
+                aria-label={`פתיחת תמונה ${index + 1} מתוך ${selectedImages.length}`}
                 aria-hidden={copy !== 1}
                 tabIndex={copy === 1 ? 0 : -1}
                 data-gallery-index={index}
                 data-gallery-copy={copy}
               >
-                <img src={image} alt={`${selectedCategory.label} בעיצוב שיר ופרח`} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                <span className="absolute inset-0 z-10 bg-black/15 transition-colors group-hover:bg-black/40" aria-hidden="true" />
-                <span className="absolute inset-0 z-20 grid place-items-center text-white opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true"><ExpandIcon /></span>
+                <img src={image} alt={`${selectedCategory.label} בעיצוב שיר ופרח`} loading="lazy" className="gallery-card-image h-full w-full object-cover transition-transform duration-700" />
+                <span className="gallery-card-overlay absolute inset-0 z-10 bg-black/15 transition-colors" aria-hidden="true" />
+                <span className="gallery-card-expand absolute inset-0 z-20 grid place-items-center text-white opacity-0 transition-opacity" aria-hidden="true"><ExpandIcon /></span>
               </button>
-            ))}
+            )) : null}
           </div>
 
           <button type="button" onClick={() => moveCarousel(1)} className="focus-ring absolute right-0 top-1/2 z-30 grid h-10 w-10 -translate-y-1/2 translate-x-1/4 place-items-center rounded-full border border-[#e8d5c4] bg-white text-[#2c3e1f] shadow-lg transition hover:scale-110 hover:bg-[#faf9f6] sm:h-12 sm:w-12 sm:translate-x-1/2" aria-label="התמונות הקודמות">
