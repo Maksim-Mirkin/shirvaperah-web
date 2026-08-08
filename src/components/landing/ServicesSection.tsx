@@ -12,12 +12,12 @@ function ServiceIcon({ index }: { index: number }) {
       <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0Z" />
       <path d="M20 3v4M22 5h-4M4 17v2M5 18H3" />
     </g>,
-    <g key="party-popper">
-      <path d="M5.8 11.3 2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01" />
-      <path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10M22 13l-.82-.33c-.86-.34-1.82.2-1.98 1.11-.11.7-.72 1.22-1.43 1.22H17M11 2l.33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7" />
-      <path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z" />
+    <g key="wedding-cake">
+      <path d="M8 8h8v4H8zM5 12h14v4H5zM3 16h18v5H3z" />
+      <path d="M12 8V6" />
+      <path d="M12 6s-2.5-1.4-2.5-3.1A1.5 1.5 0 0 1 12 1.8a1.5 1.5 0 0 1 2.5 1.1C14.5 4.6 12 6 12 6Z" />
+      <path d="M8 12v1M12 12v1M16 12v1M6 16v1M10 16v1M14 16v1M18 16v1" />
     </g>,
-    <path key="heart" d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />,
   ];
 
   return (
@@ -37,11 +37,11 @@ export default function ServicesSection() {
           description={<>אנחנו מציעות מגוון שירותי שזירה ועיצוב.<br />עיצוב באווירה טבעית וססגונית עם הקפדה על אסתטיקה ודיוק.</>}
         />
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid gap-6 md:grid-cols-3">
           {services.map((service, index) => (
-            <article key={service.title} className="group rounded-2xl border-none bg-[#faf9f6] p-7 text-center shadow-lg shadow-[#2c3e1f]/5 transition-all duration-300 ease-out hover:-translate-y-3 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[#2c3e1f]/10">
-              <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-white text-[#d4a5a5] shadow-sm transition duration-300 ease-out group-hover:scale-[1.15] group-hover:text-[#2c3e1f] group-hover:shadow-md">
-                <ServiceIcon index={index} />
+            <article key={service.title} className={`service-card rounded-2xl border-none bg-[#faf9f6] p-7 text-center shadow-lg shadow-[#2c3e1f]/5 transition-all duration-300 ease-out ${index === 1 ? 'order-first md:order-none' : ''}`}>
+              <div className="service-icon mx-auto grid h-20 w-20 place-items-center rounded-full bg-white text-[#d4a5a5] shadow-sm transition duration-300 ease-out">
+                <ServiceIcon index={[1, 2, 0][index]} />
               </div>
               <h3 className="mt-6 text-xl font-bold text-[#2c3e1f]">{service.title}</h3>
               <p className="mt-4 leading-7 text-[#5c6b4a]">{service.description}</p>

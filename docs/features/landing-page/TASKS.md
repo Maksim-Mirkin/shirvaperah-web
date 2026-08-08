@@ -30,7 +30,7 @@ Complete — approved at CHECKPOINT-3
 
 - [x] **TASK-3 — Create the centralized site-content model**
   - Covers: REQ-2, REQ-5, REQ-6, REQ-7, REQ-8, REQ-13
-  - Work: Add the approved Hebrew copy, services, gallery metadata, contact destinations, service-area wording, and image imports to `src/content/site-content.js`.
+  - Work: Add the approved Hebrew copy, services, gallery metadata, contact destinations, service-area wording, and image imports to `src/content/site-content.ts`.
   - Verify: Components contain no duplicated business contact values, and telephone, WhatsApp, and Instagram destinations match the approved public information.
 
 - [x] **TASK-4 — Build the header and hero**
@@ -45,12 +45,12 @@ Complete — approved at CHECKPOINT-3
 
 - [x] **TASK-5 — Build the gallery**
   - Covers: REQ-4, REQ-9, REQ-10, REQ-11, REQ-12, REQ-15; AC-2, AC-3, AC-4
-  - Work: Implement the three approved category filters and responsive local-image grid with correct selected-state semantics and reduced-motion behavior.
+  - Work: Implement the four approved category filters and responsive local-image carousel with correct selected-state semantics, touch/pointer dragging, lightbox behavior, and reduced-motion handling.
   - Verify: Each filter reveals the correct photographs, reports its state with `aria-pressed`, and creates no clipped content or keyboard trap.
 
 - [x] **TASK-6 — Build services and about sections**
   - Covers: REQ-5, REQ-6, REQ-9, REQ-10, REQ-11, REQ-15; AC-2, AC-3
-  - Work: Implement the four approved service cards and the business-story section with the approved photograph and quotation.
+  - Work: Implement the three approved service cards and the business-story section with the approved photograph and quotation.
   - Verify: All approved content is readable in Hebrew RTL and remains complete with animation disabled.
 
 - [x] **TASK-7 — Build contact footer**

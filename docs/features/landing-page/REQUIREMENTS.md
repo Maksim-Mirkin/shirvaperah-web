@@ -95,15 +95,18 @@ The first release should reproduce the reference's structure, content, photograp
 - Approved photographs and brand assets may be obtained from the Base44 reference when technically available. The owner confirmed the right to republish them.
 - Optimized web derivatives belong in `src/assets/images/`; original high-resolution source files should be retained outside Git in owner-controlled storage.
 - The current client-only React/Vite architecture must be preserved unless a separate architectural change is approved.
-- Hosting and the production domain have not yet been selected.
+- Production hosting uses Cloudflare Pages. `shirvaperah.co.il` has been ordered from SPD and is awaiting registrar activation and DNS connection.
 
 ## Resolved decisions
 
-- The services section will initially reproduce the four services published on the Base44 reference: custom bouquets, floral arrangements for events, bar/bat mitzvah decoration, and flower-arranging workshops.
+- The owner-approved services section presents floral arrangements for events, wedding decoration, and flower-arranging workshops; the custom-bouquet card is omitted.
 - WhatsApp is the primary contact action. Telephone and Instagram are secondary contact channels.
-- The first release retains the three gallery filters published on the reference: bouquets, table arrangements, and floral designs.
-- The first release uses the currently published service-area wording: Tivon and the surrounding area, with deliveries available. The owner will verify the wording before production release.
-- Hosting and production-domain configuration are separate release-infrastructure decisions and do not block landing-page design or local implementation.
+- The gallery provides an all-photographs view in a fresh random order per page load, plus bridal bouquets, table arrangements, and floral-design filters.
+- The owner-approved service-area wording is `צפון` (North).
+- On mobile, the wedding service appears first; on desktop it remains the middle of the three service cards.
+- The telephone, Instagram, and service-area contact cards share one visual treatment; telephone and Instagram remain fully clickable.
+- The three hero text elements use the locally bundled Gveret Levin font, with a subtle SVG erosion treatment to visually reduce its single available weight.
+- Hosting and production-domain configuration are tracked separately under `docs/features/deployment/`.
 
 ## Approval
 

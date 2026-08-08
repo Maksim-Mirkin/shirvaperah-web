@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "images:optimize": "node scripts/optimize-images.mjs",
     "typecheck": "tsc --noEmit",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/heebo": "^5.3.0",
+    "@fontsource/gveret-levin": "^5.3.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
@@ -19,6 +22,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.1",
+    "sharp": "^0.35.3",
     "tailwindcss": "^3.4.17",
     "typescript": "^7.0.2",
     "vite": "^6.0.5"

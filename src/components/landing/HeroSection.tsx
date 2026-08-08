@@ -12,22 +12,42 @@ function SparklesIcon() {
 
 export default function HeroSection() {
   const [activeImage, setActiveImage] = useState(0);
+  const [showDesktopCarousel, setShowDesktopCarousel] = useState(
+    () => window.matchMedia('(min-width: 1024px)').matches,
+  );
   const showNextImage = () => {
     setActiveImage((current) => (current + 1) % hero.images.length);
   };
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const desktopQuery = window.matchMedia('(min-width: 1024px)');
+    const updateDesktopCarousel = (event: MediaQueryListEvent) => setShowDesktopCarousel(event.matches);
+    desktopQuery.addEventListener('change', updateDesktopCarousel);
+    return () => desktopQuery.removeEventListener('change', updateDesktopCarousel);
+  }, []);
+
+  useEffect(() => {
+    if (!showDesktopCarousel || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
     const timer = window.setTimeout(() => {
       setActiveImage((current) => (current + 1) % hero.images.length);
     }, 3000);
     return () => window.clearTimeout(timer);
-  }, [activeImage]);
+  }, [activeImage, showDesktopCarousel]);
 
   return (
     <section id="home" className="relative flex min-h-[90vh] scroll-mt-24 items-start justify-center overflow-hidden pt-28 lg:items-center lg:pt-24">
+      <svg aria-hidden="true" className="absolute h-0 w-0">
+        <filter id="thin-logo-text" x="-10%" y="-10%" width="120%" height="120%">
+          <feMorphology in="SourceAlpha" operator="erode" radius="0.35" result="thinned" />
+          <feComposite in="SourceGraphic" in2="thinned" operator="in" />
+        </filter>
+        <filter id="thinner-logo-text" x="-10%" y="-10%" width="120%" height="120%">
+          <feMorphology in="SourceAlpha" operator="erode" radius="0.9" result="thinned" />
+          <feComposite in="SourceGraphic" in2="thinned" operator="in" />
+        </filter>
+      </svg>
       <div className="absolute inset-0 z-0" aria-hidden="true">
-        <img src={hero.backgroundImage} alt="" className="h-full w-full object-cover object-center" />
+        <img src={hero.backgroundImage} alt="" fetchPriority="high" className="h-full w-full object-cover object-center" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#f9f7f2]/70 via-[#f9f7f2]/60 to-[#f9f7f2]/75" />
       </div>
 
@@ -37,18 +57,18 @@ export default function HeroSection() {
             <SparklesIcon />
             <span>{hero.eyebrow}</span>
           </div>
-          <h1 className="mt-6 text-5xl font-bold leading-[1.1] tracking-tight text-[#2c3e1f] sm:text-7xl lg:text-8xl">
+          <h1 className="font-logo font-logo-thinner mt-6 text-5xl font-light not-italic leading-[1.1] text-[#3a4b31] sm:text-7xl lg:text-8xl">
             {hero.title}
           </h1>
-          <p className="mt-4 text-lg font-semibold italic tracking-wide text-[#34422b] [text-shadow:0_1px_3px_rgba(255,255,255,0.9)] sm:text-xl">
+          <p className="font-logo font-logo-thin mt-4 text-xl font-light not-italic text-[#43513b] sm:text-2xl">
             {hero.quote}
           </p>
-          <p className="mx-auto mt-8 max-w-lg text-xl font-bold leading-relaxed text-[#2f3f28] [text-shadow:0_1px_3px_rgba(255,255,255,0.85)] sm:text-2xl lg:mx-0">
+          <p className="font-logo font-logo-thin mx-auto mt-8 max-w-lg text-2xl font-light not-italic leading-relaxed text-[#405037] sm:text-3xl lg:mx-0">
             {hero.description}
           </p>
         </div>
 
-        <div className="order-1 hidden lg:order-2 lg:block">
+        {showDesktopCarousel ? <div className="order-1 hidden lg:order-2 lg:block">
           <div className="relative mx-auto aspect-[4/5] max-w-md">
             <button type="button" onClick={showNextImage} className="focus-ring absolute inset-0 rotate-2 cursor-pointer overflow-hidden rounded-[2rem] border-4 border-white bg-white shadow-2xl" aria-label="הצגת תמונת הפרחים הבאה">
               {hero.images.map((image, index) => (
@@ -67,7 +87,7 @@ export default function HeroSection() {
               <span className="text-sm font-medium text-[#5c6b4a]">אהבה בכל זר</span>
             </div>
           </div>
-        </div>
+        </div> : null}
       </div>
     </section>
   );

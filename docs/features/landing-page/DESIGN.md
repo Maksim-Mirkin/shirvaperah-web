@@ -13,7 +13,7 @@ Approved
 
 Build a single-page Hebrew RTL landing page that closely reproduces the approved Base44 reference while keeping the implementation static, accessible, responsive, and maintainable in the existing React/Vite client.
 
-The visual direction uses warm off-white backgrounds, deep botanical green text, muted green supporting text, dusty-pink accents, generous whitespace, rounded photography, and Heebo typography. Authentic business photographs carry most of the visual weight.
+The visual direction uses warm off-white backgrounds, deep botanical green text, muted green supporting text, dusty-pink accents, generous whitespace, rounded photography, and Heebo typography. The three prominent hero text elements use the locally bundled Gveret Levin display face. Authentic business photographs carry most of the visual weight.
 
 ## User experience
 
@@ -21,8 +21,8 @@ The visual direction uses warm off-white backgrounds, deep botanical green text,
 
 1. **Header:** business logo, anchor navigation, Instagram and telephone links, a prominent WhatsApp/contact action, and a compact mobile menu.
 2. **Hero:** the business name, “בוטיק פרחים בטבעון”, the Rotblit quotation, a short description, a primary WhatsApp action, and featured floral imagery.
-3. **Gallery:** heading and description, three keyboard-operable category filters, and a responsive image grid for bouquets, table arrangements, and floral designs.
-4. **Services:** four cards for custom bouquets, event arrangements, bar/bat mitzvah decoration, and flower-arranging workshops.
+3. **Gallery:** heading and description, four keyboard-operable category filters, and a responsive horizontal carousel for all photographs, bridal bouquets, table arrangements, and floral designs.
+4. **Services:** three evenly distributed cards for event arrangements, wedding decoration, and flower-arranging workshops.
 5. **About:** the published story of the two sisters, the quotation “ימי הפרח והאהבה”, and the approved portrait/work photograph.
 6. **Contact and footer:** WhatsApp and telephone actions, telephone number, Instagram link, service area, and copyright notice.
 
@@ -30,17 +30,22 @@ Header navigation scrolls to page sections using stable anchor IDs. The header r
 
 ### Responsive behavior
 
-- Mobile is the baseline layout: single-column content, touch-sized actions, horizontally wrapping gallery filters, and a menu button for navigation.
-- Larger screens use split hero/about layouts, multi-column service cards, and a denser gallery grid.
+- Mobile is the baseline layout: single-column content, touch-sized actions, gallery filters arranged in a stable two-by-two grid, and a menu button for navigation.
+- Larger screens use split hero/about layouts, three-column service cards, and a wider gallery carousel.
+- The wedding service card is first on mobile and returns to the middle position in the three-column desktop layout.
 - Images preserve their intended crop with `object-fit: cover`; no essential faces or arrangements may be cropped without visual review.
 - Page content uses a shared maximum width and fluid side padding.
 
 ### Gallery interaction
 
-- One category is selected by default.
+- The all-photographs category is selected by default and is shuffled once per page load.
 - Selecting a filter changes the visible image set without navigation or persistence.
 - The selected filter is visually distinct and exposed programmatically with `aria-pressed`.
 - If an approved category has no images, it is omitted rather than showing an empty gallery.
+- The carousel remains still until the visitor interacts, supports horizontal touch/pointer dragging and visible arrow controls, and loops continuously.
+- Drag release preserves the natural position; arrow activation advances far enough to reveal the next photograph completely.
+- Activating a photograph opens a lightbox. Escape, the close control, the backdrop, and the enlarged photograph all close it.
+- Hover-only feedback is restricted to devices with a fine pointer and hover support.
 
 ### Content handling
 
@@ -59,9 +64,10 @@ App
         ├── HeroSection
         ├── GallerySection
         │   ├── GalleryFilters
-        │   └── GalleryGrid
+        │   ├── GalleryCarousel
+        │   └── GalleryLightbox
         ├── ServicesSection
-        │   └── ServiceCard × 4
+        │   └── ServiceCard × 3
         ├── AboutSection
         └── ContactFooter
 ```
@@ -77,7 +83,7 @@ The existing Base44-specific authentication, query-client, toaster, and multi-pa
 ## Data and state
 
 - All content is static and bundled at build time.
-- Gallery selection and mobile-menu visibility are local React state.
+- Gallery selection, carousel interaction, lightbox visibility, hero rotation, and mobile-menu visibility are local React state.
 - No state is persisted and no network request is required to render the page.
 - External contact actions use normal links (`https://wa.me/`, `tel:`, and Instagram HTTPS) rather than JavaScript navigation.
 - Image loading uses native browser behavior. Below-the-fold gallery images use lazy loading; the primary hero image is loaded eagerly.
@@ -92,6 +98,12 @@ The existing Base44-specific authentication, query-client, toaster, and multi-pa
 - Keep interactive targets at least 44 by 44 CSS pixels where practical.
 - Respect `prefers-reduced-motion`; content and navigation remain usable without transitions.
 - Verify foreground/background combinations for WCAG AA contrast.
+
+## Typography details
+
+- Heebo remains the primary interface and body typeface.
+- Gveret Levin is self-hosted through Fontsource and is used only for the hero business name, quotation, and description.
+- Gveret Levin provides only a regular weight. A small SVG morphology filter visually thins those hero glyphs; the business name uses a slightly stronger value than the other two lines.
 
 ## Security and privacy
 
@@ -119,7 +131,7 @@ The existing Base44-specific authentication, query-client, toaster, and multi-pa
 
 ## Open questions
 
-- None blocking design approval. Final contact details, service-area wording, and image selection require owner verification before production release.
+- None blocking design approval; contact details, service-area wording, and the current image selection were verified by the owner at the landing-page checkpoints.
 
 ## Approval
 

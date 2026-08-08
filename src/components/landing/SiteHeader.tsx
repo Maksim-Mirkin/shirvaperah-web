@@ -120,7 +120,7 @@ export default function SiteHeader() {
           <a href={contact.phoneHref} className="focus-ring rounded-lg py-2 text-xl font-medium" dir="ltr" onClick={() => setMenuOpen(false)}>
             {contact.phoneDisplay}
           </a>
-          <a href={contact.whatsappHref} target="_blank" rel="noopener noreferrer" className="focus-ring mt-2 inline-flex min-h-14 items-center justify-center gap-2 rounded-xl bg-[#25d366] px-6 text-lg font-semibold text-white" onClick={() => setMenuOpen(false)}>
+          <a href={contact.whatsappHref} target="_blank" rel="noopener noreferrer" className="focus-ring mt-2 inline-flex min-h-14 items-center justify-center gap-2 rounded-xl bg-[#167c3b] px-6 text-lg font-semibold text-white" onClick={() => setMenuOpen(false)}>
             <WhatsAppIcon />
             וואטסאפ
           </a>

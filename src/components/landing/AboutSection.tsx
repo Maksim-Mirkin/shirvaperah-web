@@ -13,7 +13,7 @@ export default function AboutSection() {
           <blockquote className="relative mt-10 border-r-4 border-[#d4a5a5] pr-7">
             <span className="absolute -right-3 -top-4 bg-[#f9f7f2] px-1 text-4xl text-[#d4a5a5]" aria-hidden="true">״</span>
             <p className="font-serif text-2xl font-semibold italic text-[#2c3e1f]">ימי הפרח והאהבה</p>
-            <footer className="mt-1 text-sm text-[#5c6b4a]/65">— י. רוטבליט</footer>
+            <footer className="mt-1 text-sm text-[#5c6b4a]">— י. רוטבליט</footer>
           </blockquote>
         </div>
 
