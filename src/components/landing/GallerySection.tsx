@@ -97,36 +97,26 @@ export default function GallerySection() {
     return () => window.removeEventListener('keydown', handleLightboxKeys);
   }, [lightboxImage, selectedImages.length]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!lightboxOpen) return undefined;
-    const scrollY = window.scrollY;
     const { body, documentElement } = document;
     const previousBodyStyles = {
       overflow: body.style.overflow,
-      position: body.style.position,
-      top: body.style.top,
-      width: body.style.width,
+      overscrollBehavior: body.style.overscrollBehavior,
     };
     const previousDocumentOverflow = documentElement.style.overflow;
-    const previousScrollBehavior = documentElement.style.scrollBehavior;
+    const previousDocumentOverscrollBehavior = documentElement.style.overscrollBehavior;
 
-    documentElement.dataset.scrollLockY = String(scrollY);
     body.style.overflow = 'hidden';
-    body.style.position = 'fixed';
-    body.style.top = `-${scrollY}px`;
-    body.style.width = '100%';
+    body.style.overscrollBehavior = 'none';
     documentElement.style.overflow = 'hidden';
+    documentElement.style.overscrollBehavior = 'none';
 
     return () => {
       body.style.overflow = previousBodyStyles.overflow;
-      body.style.position = previousBodyStyles.position;
-      body.style.top = previousBodyStyles.top;
-      body.style.width = previousBodyStyles.width;
+      body.style.overscrollBehavior = previousBodyStyles.overscrollBehavior;
       documentElement.style.overflow = previousDocumentOverflow;
-      documentElement.style.scrollBehavior = 'auto';
-      window.scrollTo(0, scrollY);
-      documentElement.style.scrollBehavior = previousScrollBehavior;
-      delete documentElement.dataset.scrollLockY;
+      documentElement.style.overscrollBehavior = previousDocumentOverscrollBehavior;
     };
   }, [lightboxOpen]);
 
@@ -358,7 +348,7 @@ export default function GallerySection() {
           role="dialog"
           aria-modal="true"
           aria-label="תצוגת תמונה מוגדלת"
-          className={`fixed inset-0 z-[70] grid touch-pan-y place-items-center bg-black/90 p-4 transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`}
+          className={`fixed inset-0 z-[70] grid touch-none place-items-center overscroll-contain bg-black/90 p-4 transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`}
           onClick={closeLightboxFromSurface}
           onTouchStart={startLightboxSwipe}
           onTouchEnd={finishLightboxSwipe}
@@ -380,7 +370,7 @@ export default function GallerySection() {
               key={lightboxImage}
               src={lightboxImage}
               alt={`${selectedCategory.label} בעיצוב שיר ופרח`}
-              className={`max-h-[90vh] max-w-full touch-pan-y select-none rounded-lg object-contain transition-all duration-300 ease-out ${lightboxVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
+              className={`max-h-[90vh] max-w-full touch-none select-none rounded-lg object-contain transition-all duration-300 ease-out ${lightboxVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
               draggable={false}
               onClick={closeLightboxFromSurface}
             />
