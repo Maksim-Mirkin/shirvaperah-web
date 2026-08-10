@@ -66,7 +66,6 @@ Shir VaPerah Web is the public web client for the Shir VaPerah project. This doc
 - The owner confirmed that Shir VaPerah has the right to republish the logo, photographs, and text currently published on the Base44 reference.
 - Obtain web-ready copies of the approved logo, floral photographs, owner photographs, and other brand assets from the Base44 reference or their original source.
 - Which contact actions are required at launch: WhatsApp, telephone, Instagram, and/or a contact form?
-- What geographic service area should the site state?
 - Which hosting provider and domain will be used?
 
 ## Definition of ready for a feature

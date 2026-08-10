@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import type { PointerEvent as ReactPointerEvent, UIEvent } from 'react';
+import type { PointerEvent as ReactPointerEvent, TouchEvent as ReactTouchEvent, UIEvent } from 'react';
 import { galleryCategories } from '@/content/site-content';
 import SectionHeading from './SectionHeading';
 
@@ -12,7 +12,6 @@ type DragState = {
   startScroll: number;
   image: GalleryImage | null;
 };
-
 function shuffleImages(images: readonly GalleryImage[]) {
   const shuffled = [...images];
   for (let index = shuffled.length - 1; index > 0; index -= 1) {
@@ -42,7 +41,7 @@ function ExpandIcon() {
 export default function GallerySection() {
   const [activeCategory, setActiveCategory] = useState(galleryCategories[0].id);
   const [visible, setVisible] = useState(true);
-  const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [lightboxVisible, setLightboxVisible] = useState(false);
   const [galleryInView, setGalleryInView] = useState(false);
   const [imagesReady, setImagesReady] = useState(false);
@@ -53,30 +52,83 @@ export default function GallerySection() {
   const transitionTimer = useRef<number | undefined>(undefined);
   const lightboxTimer = useRef<number | undefined>(undefined);
   const dragState = useRef<DragState>({ active: false, moved: false, startX: 0, startScroll: 0, image: null });
+  const lightboxTouchStartX = useRef<number | null>(null);
+  const suppressLightboxClickUntil = useRef(0);
   const selectedCategory = galleryCategories.find((category) => category.id === activeCategory) ?? galleryCategories[0];
   const selectedImages = selectedCategory.id === 'all' ? allImages : selectedCategory.images;
+  const lightboxImage = lightboxIndex === null ? null : selectedImages[lightboxIndex];
+  const lightboxOpen = lightboxIndex !== null;
   const cardStep = 316;
   const loopWidth = selectedImages.length * cardStep;
   const loopImages = [0, 1, 2].flatMap((copy) => selectedImages.map((image, index) => ({ copy, image, index })));
 
-  const openLightbox = (image: GalleryImage) => {
+  const openLightbox = (index: number) => {
     window.clearTimeout(lightboxTimer.current);
-    setLightboxImage(image);
+    setLightboxIndex(index);
     lightboxTimer.current = window.setTimeout(() => setLightboxVisible(true), 20);
   };
 
   const closeLightbox = () => {
     setLightboxVisible(false);
     window.clearTimeout(lightboxTimer.current);
-    lightboxTimer.current = window.setTimeout(() => setLightboxImage(null), 300);
+    lightboxTimer.current = window.setTimeout(() => setLightboxIndex(null), 300);
+  };
+
+  const moveLightbox = (direction: Direction) => {
+    setLightboxIndex((current) => {
+      if (current === null) return null;
+      return (current + direction + selectedImages.length) % selectedImages.length;
+    });
   };
 
   useEffect(() => {
     if (!lightboxImage) return undefined;
-    const closeOnEscape = (event: KeyboardEvent) => event.key === 'Escape' && closeLightbox();
-    window.addEventListener('keydown', closeOnEscape);
-    return () => window.removeEventListener('keydown', closeOnEscape);
-  }, [lightboxImage]);
+    const handleLightboxKeys = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeLightbox();
+      else if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        moveLightbox(1);
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        moveLightbox(-1);
+      }
+    };
+    window.addEventListener('keydown', handleLightboxKeys);
+    return () => window.removeEventListener('keydown', handleLightboxKeys);
+  }, [lightboxImage, selectedImages.length]);
+
+  useEffect(() => {
+    if (!lightboxOpen) return undefined;
+    const scrollY = window.scrollY;
+    const { body, documentElement } = document;
+    const previousBodyStyles = {
+      overflow: body.style.overflow,
+      position: body.style.position,
+      top: body.style.top,
+      width: body.style.width,
+    };
+    const previousDocumentOverflow = documentElement.style.overflow;
+    const previousScrollBehavior = documentElement.style.scrollBehavior;
+
+    documentElement.dataset.scrollLockY = String(scrollY);
+    body.style.overflow = 'hidden';
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.width = '100%';
+    documentElement.style.overflow = 'hidden';
+
+    return () => {
+      body.style.overflow = previousBodyStyles.overflow;
+      body.style.position = previousBodyStyles.position;
+      body.style.top = previousBodyStyles.top;
+      body.style.width = previousBodyStyles.width;
+      documentElement.style.overflow = previousDocumentOverflow;
+      documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, scrollY);
+      documentElement.style.scrollBehavior = previousScrollBehavior;
+      delete documentElement.dataset.scrollLockY;
+    };
+  }, [lightboxOpen]);
 
   useEffect(() => () => {
     window.clearTimeout(transitionTimer.current);
@@ -168,7 +220,6 @@ export default function GallerySection() {
       startX: event.clientX,
       startScroll: carouselRef.current?.scrollLeft ?? 0,
     };
-    event.currentTarget.setPointerCapture(event.pointerId);
   };
 
   const dragCarousel = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -178,7 +229,10 @@ export default function GallerySection() {
       return;
     }
     const distance = event.clientX - dragState.current.startX;
-    if (Math.abs(distance) > 14) dragState.current.moved = true;
+    if (Math.abs(distance) > 14 && !dragState.current.moved) {
+      dragState.current.moved = true;
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
     if (carouselRef.current) carouselRef.current.scrollLeft = dragState.current.startScroll - distance;
   };
 
@@ -190,6 +244,30 @@ export default function GallerySection() {
 
   const cancelDrag = () => {
     dragState.current = { ...dragState.current, active: false };
+  };
+
+  const startLightboxSwipe = (event: ReactTouchEvent<HTMLDivElement>) => {
+    lightboxTouchStartX.current = event.touches[0]?.clientX ?? null;
+  };
+
+  const finishLightboxSwipe = (event: ReactTouchEvent<HTMLDivElement>) => {
+    const startX = lightboxTouchStartX.current;
+    const endX = event.changedTouches[0]?.clientX;
+    lightboxTouchStartX.current = null;
+    if (startX === null || endX === undefined) return;
+    const distance = endX - startX;
+    if (Math.abs(distance) < 50) return;
+    suppressLightboxClickUntil.current = Date.now() + 400;
+    moveLightbox(distance < 0 ? 1 : -1);
+  };
+
+  const cancelLightboxSwipe = () => {
+    lightboxTouchStartX.current = null;
+  };
+
+  const closeLightboxFromSurface = () => {
+    if (Date.now() < suppressLightboxClickUntil.current) return;
+    closeLightbox();
   };
 
   const keepCarouselLooped = (event: UIEvent<HTMLDivElement>) => {
@@ -250,7 +328,7 @@ export default function GallerySection() {
                     dragState.current.moved = false;
                     return;
                   }
-                  openLightbox(image);
+                  openLightbox(index);
                 }}
                 className="focus-ring group relative aspect-[4/5] w-[min(300px,85vw)] flex-none overflow-hidden rounded-2xl bg-[#e8d5c4]"
                 aria-label={`פתיחת תמונה ${index + 1} מתוך ${selectedImages.length}`}
@@ -276,9 +354,38 @@ export default function GallerySection() {
       </div>
 
       {lightboxImage ? (
-        <div role="dialog" aria-modal="true" aria-label="תצוגת תמונה מוגדלת" className={`fixed inset-0 z-[70] grid place-items-center bg-black/90 p-4 transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`} onClick={closeLightbox}>
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="תצוגת תמונה מוגדלת"
+          className={`fixed inset-0 z-[70] grid touch-pan-y place-items-center bg-black/90 p-4 transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`}
+          onClick={closeLightboxFromSurface}
+          onTouchStart={startLightboxSwipe}
+          onTouchEnd={finishLightboxSwipe}
+          onTouchCancel={cancelLightboxSwipe}
+        >
           <button type="button" onClick={closeLightbox} className={`focus-ring absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-full text-4xl text-white transition-all duration-300 hover:text-[#d4a5a5] ${lightboxVisible ? 'scale-100 opacity-100' : 'scale-90 opacity-0'}`} aria-label="סגירת תמונה">×</button>
-          <img src={lightboxImage} alt="סידור פרחים בתצוגה מוגדלת" className={`max-h-[90vh] max-w-full rounded-lg object-contain transition-all duration-300 ease-out ${lightboxVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`} onClick={closeLightbox} />
+          {selectedImages.length > 1 ? (
+            <>
+              <button type="button" onClick={(event) => { event.stopPropagation(); moveLightbox(-1); }} className={`focus-ring absolute right-3 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-black/45 text-white transition hover:bg-black/70 sm:right-6 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`} aria-label="התמונה הקודמת">
+                <ArrowIcon direction="right" />
+              </button>
+              <button type="button" onClick={(event) => { event.stopPropagation(); moveLightbox(1); }} className={`focus-ring absolute left-3 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-black/45 text-white transition hover:bg-black/70 sm:left-6 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`} aria-label="התמונה הבאה">
+                <ArrowIcon direction="left" />
+              </button>
+            </>
+          ) : null}
+          <div className="grid max-h-[90vh] max-w-full place-items-center" aria-live="polite" onClick={(event) => event.stopPropagation()}>
+            <img
+              key={lightboxImage}
+              src={lightboxImage}
+              alt={`${selectedCategory.label} בעיצוב שיר ופרח`}
+              className={`max-h-[90vh] max-w-full touch-pan-y select-none rounded-lg object-contain transition-all duration-300 ease-out ${lightboxVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
+              draggable={false}
+              onClick={closeLightboxFromSurface}
+            />
+            <span className="sr-only">{`${(lightboxIndex ?? 0) + 1} מתוך ${selectedImages.length}`}</span>
+          </div>
         </div>
       ) : null}
     </section>
