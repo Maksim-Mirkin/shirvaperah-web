@@ -102,7 +102,7 @@ The first release should reproduce the reference's structure, content, photograp
 - The owner-approved services section presents floral arrangements for events, wedding decoration, and flower-arranging workshops; the custom-bouquet card is omitted.
 - WhatsApp is the primary contact action. Telephone and Instagram are secondary contact channels.
 - The gallery provides an all-photographs view in a fresh random order per page load, plus bridal bouquets, table arrangements, and floral-design filters.
-- The owner-approved service-area wording is `צפון` (North).
+- The owner-approved service-area wording is `צפון ומרכז` (North and Center).
 - On mobile, the wedding service appears first; on desktop it remains the middle of the three service cards.
 - The telephone, Instagram, and service-area contact cards share one visual treatment; telephone and Instagram remain fully clickable.
 - The three hero text elements use the locally bundled Gveret Levin font, with a subtle SVG erosion treatment to visually reduce its single available weight.

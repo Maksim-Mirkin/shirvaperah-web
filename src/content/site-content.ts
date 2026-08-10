@@ -29,7 +29,7 @@ export const contact = {
   whatsappHref: window.location.protocol === 'https:' ? '/whatsapp' : whatsappDirectHref,
   instagramHref: 'https://instagram.com/shirvaperah',
   instagramDisplay: '@shirvaperah',
-  serviceArea: 'צפון',
+  serviceArea: 'צפון ומרכז',
 };
 
 export const hero = {

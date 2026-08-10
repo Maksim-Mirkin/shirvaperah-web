@@ -49,7 +49,9 @@ export default function SiteHeader() {
     const updateHeader = () => {
       const hero = document.getElementById('home');
       const threshold = hero ? hero.offsetTop + hero.offsetHeight - 96 : 56;
-      setScrolled(window.scrollY > threshold);
+      const lockedScrollValue = document.documentElement.dataset.scrollLockY;
+      const effectiveScrollY = lockedScrollValue === undefined ? window.scrollY : Number(lockedScrollValue);
+      setScrolled(effectiveScrollY > threshold);
     };
     updateHeader();
     window.addEventListener('scroll', updateHeader, { passive: true });
