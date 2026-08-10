@@ -73,7 +73,7 @@ The completed landing page exists only in GitHub and on a local computer. Visito
 - Production branch: `main`.
 - Preview branch deployments: disabled initially.
 - Current Pages production URL: `https://shirvaperah-web.pages.dev`.
-- `shirvaperah.co.il` was ordered through SPD and is awaiting registrar activation before nameserver changes can begin.
+- `shirvaperah.co.il` is registered through SPD; its nameservers have been changed to the Cloudflare-assigned pair and registrar propagation is pending.
 - Cloudflare's current Free plan allows 500 Pages builds per month and unlimited static-asset requests; this project should remain far below that limit.
 - Connecting the apex domain later requires adding it as a Cloudflare zone and changing the registrar's nameservers to the Cloudflare-assigned values.
 

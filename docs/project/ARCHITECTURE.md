@@ -85,7 +85,7 @@ temporary branch
 - **Tradeoffs:** Hosting and DNS depend on Cloudflare, while the application remains portable static output with no Cloudflare-specific runtime code.
 - **Security and privacy:** No Cloudflare credentials or visitor-data pipeline are stored in the repository. The owner-controlled account retains recovery, two-factor authentication, DNS, and rollback access.
 - **Operations and rollback:** A failed build leaves the previous production deployment active. Restore a prior verified deployment for immediate recovery and reconcile `main` with a revert or corrective pull request.
-- **Domain:** `shirvaperah.co.il` has been ordered through SPD and will be attached after registrar activation and Cloudflare nameserver configuration.
+- **Domain:** `shirvaperah.co.il` is registered through SPD and delegated to Cloudflare; the apex and `www` hostnames will be attached to Pages after nameserver propagation completes.
 - **Approval:** Approved by the repository owner during the deployment feature on 2026-08-08.
 
 ## Architectural decision process
