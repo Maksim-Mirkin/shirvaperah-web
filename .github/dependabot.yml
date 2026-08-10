@@ -6,7 +6,17 @@ updates:
       interval: weekly
     open-pull-requests-limit: 5
     groups:
-      production-dependencies:
+      production-patches:
+        applies-to: version-updates
         dependency-type: production
-      development-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - patch
+      development-patches:
+        applies-to: version-updates
         dependency-type: development
+        patterns:
+          - "*"
+        update-types:
+          - patch
