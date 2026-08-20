@@ -82,7 +82,7 @@ In progress — pull request approved; domain activation and post-merge producti
 - [x] Order `shirvaperah.co.il` through SPD in the wife's owner-controlled registrar account.
 - [x] Wait for SPD to activate the registration.
 - [x] Add the domain to the wife's Cloudflare account and change registrar nameservers.
-- [ ] Attach apex and `www` hostnames to Pages and verify HTTPS.
+- [x] Attach apex and `www` hostnames to Pages and verify HTTPS.
 - [x] Add canonical and absolute social-preview metadata, `sitemap.xml`, and local-business structured data for the production hostname.
 
 ## Verification
