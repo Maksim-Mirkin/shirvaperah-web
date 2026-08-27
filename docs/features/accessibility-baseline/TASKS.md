@@ -2,7 +2,7 @@
 
 ## Status
 
-Verified — awaiting publication approval at CHECKPOINT-2
+Published for review — pull request opened
 
 ## Preconditions
 
@@ -83,7 +83,7 @@ Verified — awaiting publication approval at CHECKPOINT-2
   - Work: Confirm architecture impact, update feature status, run publication checks, and prepare the pull request.
   - Verify: Record “No architecture change” unless a project-wide boundary actually changed.
 
-- [ ] **CHECKPOINT-2 — Commit, push, and open pull request**
+- [x] **CHECKPOINT-2 — Commit, push, and open pull request**
   - Continue when: Owner approves publishing the verified feature branch.
 
 ## Architecture impact
