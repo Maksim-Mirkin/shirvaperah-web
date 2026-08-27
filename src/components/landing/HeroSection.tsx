@@ -83,7 +83,7 @@ export default function HeroSection() {
               ))}
             </button>
             <div className="absolute -bottom-6 -right-6 rounded-2xl border border-[#e8d5c4] bg-white p-6 text-center shadow-xl">
-              <span className="block text-3xl font-bold text-[#d4a5a5]">100%</span>
+              <span className="block text-3xl font-bold text-[#9f5963]">100%</span>
               <span className="text-sm font-medium text-[#5c6b4a]">אהבה בכל זר</span>
             </div>
           </div>

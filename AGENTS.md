@@ -49,6 +49,7 @@ Rules for the workflow:
 - Implementation tasks are agent-owned. Execute consecutive tasks autonomously in the documented order without asking the owner to approve each task.
 - Owner review happens only at an explicit `CHECKPOINT` in the feature `TASKS.md`, unless progress is genuinely blocked by missing authority, missing required information, or a safety concern.
 - Complete every task before the next checkpoint, run the checkpoint's stated verification, start the local site when visual review is required, and then stop for owner feedback.
+- Whenever requesting owner review at a `CHECKPOINT` or any equivalent manual-review step, include a clickable link to `docs/project/VERIFICATION.md`. When the feature has its own `VERIFICATION.md`, include a clickable link to that file as well.
 - Do not start work after a checkpoint until the owner explicitly approves continuing.
 - Apply requested checkpoint changes, re-run the checkpoint verification, and pause again until approved.
 - Routine implementation choices that stay inside approved requirements and design do not require additional owner confirmation.

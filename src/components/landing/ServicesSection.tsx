@@ -34,14 +34,16 @@ export default function ServicesSection() {
         <SectionHeading
           eyebrow="מה אנחנו מציעות"
           title="השירותים שלנו"
+          titleId="services-heading"
+          titleTabIndex={-1}
           description={<>אנחנו מציעות מגוון שירותי שזירה ועיצוב.<br />עיצוב באווירה טבעית וססגונית עם הקפדה על אסתטיקה ודיוק.</>}
         />
 
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {services.map((service, index) => (
-            <article key={service.title} className={`service-card rounded-2xl border-none bg-[#faf9f6] p-7 text-center shadow-lg shadow-[#2c3e1f]/5 transition-all duration-300 ease-out ${index === 1 ? 'order-first md:order-none' : ''}`}>
+            <article key={service.title} className="service-card rounded-2xl border-none bg-[#faf9f6] p-7 text-center shadow-lg shadow-[#2c3e1f]/5 transition-all duration-300 ease-out">
               <div className="service-icon mx-auto grid h-20 w-20 place-items-center rounded-full bg-white text-[#d4a5a5] shadow-sm transition duration-300 ease-out">
-                <ServiceIcon index={[1, 2, 0][index]} />
+                <ServiceIcon index={[2, 1, 0][index]} />
               </div>
               <h3 className="mt-6 text-xl font-bold text-[#2c3e1f]">{service.title}</h3>
               <p className="mt-4 leading-7 text-[#5c6b4a]">{service.description}</p>
