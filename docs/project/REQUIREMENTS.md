@@ -83,5 +83,6 @@ A feature is done when:
 
 - All accepted tasks and acceptance criteria are complete.
 - Relevant automated checks and the production build pass.
+- The reusable project sanity check and the feature-specific verification scenarios pass.
 - The change has been reviewed in a pull-request preview when available.
 - Documentation matches the implemented result.
