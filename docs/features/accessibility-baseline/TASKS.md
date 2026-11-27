@@ -2,7 +2,7 @@
 
 ## Status
 
-Published for review — pull request opened
+Complete — requested changes verified and approved
 
 ## Preconditions
 

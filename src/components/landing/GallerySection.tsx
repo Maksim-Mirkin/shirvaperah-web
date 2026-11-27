@@ -23,6 +23,13 @@ function shuffleImages(images: readonly GalleryImage[]) {
   return shuffled;
 }
 
+function getCarouselLoopWidth(carousel: HTMLElement) {
+  const firstCopy = carousel.querySelector<HTMLElement>('[data-gallery-copy="0"]');
+  const secondCopy = carousel.querySelector<HTMLElement>('[data-gallery-copy="1"]');
+  if (!firstCopy || !secondCopy) return carousel.scrollWidth / 3;
+  return Math.abs(firstCopy.offsetLeft - secondCopy.offsetLeft);
+}
+
 function ArrowIcon({ direction }: { direction: 'left' | 'right' }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
@@ -64,8 +71,6 @@ export default function GallerySection() {
   const selectedImages = selectedCategory.id === 'all' ? allImages : selectedCategory.images;
   const lightboxImage = lightboxIndex === null ? null : selectedImages[lightboxIndex];
   const lightboxOpen = lightboxIndex !== null;
-  const cardStep = 316;
-  const loopWidth = selectedImages.length * cardStep;
   const loopImages = [0, 1, 2].flatMap((copy) => selectedImages.map((image, index) => ({ copy, image, index })));
 
   const openLightbox = (index: number) => {
@@ -139,8 +144,19 @@ export default function GallerySection() {
   }, []);
 
   useLayoutEffect(() => {
-    if (imagesReady && carouselRef.current) carouselRef.current.scrollLeft = -loopWidth;
-  }, [activeCategory, imagesReady, loopWidth]);
+    const carousel = carouselRef.current;
+    if (imagesReady && carousel) carousel.scrollLeft = -getCarouselLoopWidth(carousel);
+  }, [activeCategory, imagesReady, selectedImages.length]);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!imagesReady || !carousel) return undefined;
+    const observer = new ResizeObserver(() => {
+      carousel.scrollLeft = -getCarouselLoopWidth(carousel);
+    });
+    observer.observe(carousel);
+    return () => observer.disconnect();
+  }, [activeCategory, imagesReady]);
 
   const selectCategory = (categoryId: string) => {
     if (categoryId === activeCategory) return;
@@ -298,9 +314,10 @@ export default function GallerySection() {
     const carousel = event.currentTarget;
     window.clearTimeout(carouselLoopTimer.current);
     carouselLoopTimer.current = window.setTimeout(() => {
-      if (carousel.scrollLeft > -loopWidth) {
+      const loopWidth = getCarouselLoopWidth(carousel);
+      if (carousel.scrollLeft > -loopWidth + 1) {
         carousel.scrollLeft -= loopWidth;
-      } else if (carousel.scrollLeft < -(loopWidth * 2)) {
+      } else if (carousel.scrollLeft < -(loopWidth * 2) - 1) {
         carousel.scrollLeft += loopWidth;
       }
     }, 120);
