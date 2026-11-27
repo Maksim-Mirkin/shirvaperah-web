@@ -58,15 +58,15 @@ Shir VaPerah Web is the public web client for the Shir VaPerah project. This doc
 - Payments or commerce
 - User data collection
 - Analytics, monitoring, or other external services
-- A production hosting provider or custom domain
 
-## Open product questions
+## Approved launch decisions
 
-- Use the Hebrew copy currently published on the Base44 reference as the approved first-release copy.
+- The published Hebrew copy is approved for the first release.
 - The owner confirmed that Shir VaPerah has the right to republish the logo, photographs, and text currently published on the Base44 reference.
-- Obtain web-ready copies of the approved logo, floral photographs, owner photographs, and other brand assets from the Base44 reference or their original source.
-- Which contact actions are required at launch: WhatsApp, telephone, Instagram, and/or a contact form?
-- Which hosting provider and domain will be used?
+- The approved logo and photographs are stored as optimized local assets in the public client.
+- Launch contact actions are WhatsApp, telephone, and Instagram; no contact form is included.
+- Cloudflare Pages is the production host, and `https://shirvaperah.co.il` is the canonical production URL.
+- No blocking product questions remain for the released landing page.
 
 ## Definition of ready for a feature
 

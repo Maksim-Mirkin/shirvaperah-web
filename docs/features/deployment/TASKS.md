@@ -2,7 +2,7 @@
 
 ## Status
 
-In progress — pull request approved; domain activation and post-merge production verification remain deferred
+In progress — production and custom domain are live; rollback drill remains
 
 ## Preconditions
 
@@ -82,7 +82,7 @@ In progress — pull request approved; domain activation and post-merge producti
 - [x] Order `shirvaperah.co.il` through SPD in the wife's owner-controlled registrar account.
 - [x] Wait for SPD to activate the registration.
 - [x] Add the domain to the wife's Cloudflare account and change registrar nameservers.
-- [ ] Attach apex and `www` hostnames to Pages and verify HTTPS.
+- [x] Attach apex and `www` hostnames to Pages and verify HTTPS.
 - [x] Add canonical and absolute social-preview metadata, `sitemap.xml`, and local-business structured data for the production hostname.
 
 ## Verification
@@ -99,6 +99,6 @@ In progress — pull request approved; domain activation and post-merge producti
 ## Completion
 
 - [ ] All approved tasks and acceptance criteria are complete.
-- [ ] Required CI checks pass.
+- [x] Required CI checks pass.
 - [x] Pull request is ready for owner review.
 - Architecture impact: Updated `docs/project/ARCHITECTURE.md` to record Cloudflare Pages as the production static-delivery platform.
