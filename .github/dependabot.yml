@@ -18,10 +18,11 @@ updates:
           - "*"
         update-types:
           - patch
-      development-patches:
+      development-updates:
         applies-to: version-updates
         dependency-type: development
         patterns:
           - "*"
         update-types:
+          - minor
           - patch
