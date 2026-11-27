@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { MouseEvent } from 'react';
 import { contact, logo } from '@/content/site-content';
 
@@ -44,14 +44,15 @@ function WhatsAppIcon() {
 export default function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuDialogRef = useRef<HTMLDivElement>(null);
+  const firstMenuLinkRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     const updateHeader = () => {
       const hero = document.getElementById('home');
       const threshold = hero ? hero.offsetTop + hero.offsetHeight - 96 : 56;
-      const lockedScrollValue = document.documentElement.dataset.scrollLockY;
-      const effectiveScrollY = lockedScrollValue === undefined ? window.scrollY : Number(lockedScrollValue);
-      setScrolled(effectiveScrollY > threshold);
+      setScrolled(window.scrollY > threshold);
     };
     updateHeader();
     window.addEventListener('scroll', updateHeader, { passive: true });
@@ -65,12 +66,36 @@ export default function SiteHeader() {
   useEffect(() => {
     if (!menuOpen) return undefined;
     const previousOverflow = document.body.style.overflow;
-    const closeOnEscape = (event: KeyboardEvent) => event.key === 'Escape' && setMenuOpen(false);
+    const backgroundElements = [...document.querySelectorAll<HTMLElement>('#main-content, #contact, [data-skip-link], [data-header-secondary]')];
+    const previousInertValues = backgroundElements.map((element) => element.inert);
+    backgroundElements.forEach((element) => { element.inert = true; });
     document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', closeOnEscape);
+    firstMenuLinkRef.current?.focus({ preventScroll: true });
+
+    const handleMenuKeys = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setMenuOpen(false);
+        return;
+      }
+      if (event.key !== 'Tab' || !menuDialogRef.current) return;
+      const focusable = [menuButtonRef.current, ...menuDialogRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')].filter((element): element is HTMLElement => element !== null);
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', handleMenuKeys);
     return () => {
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', closeOnEscape);
+      document.removeEventListener('keydown', handleMenuKeys);
+      backgroundElements.forEach((element, index) => { element.inert = previousInertValues[index]; });
+      window.requestAnimationFrame(() => menuButtonRef.current?.focus({ preventScroll: true }));
     };
   }, [menuOpen]);
 
@@ -87,8 +112,8 @@ export default function SiteHeader() {
       <header className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${scrolled || menuOpen ? 'border-stone-200/70 bg-white/85 py-3 shadow-sm backdrop-blur-md' : 'border-transparent bg-transparent py-6'}`}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
         <div className="flex items-center gap-8">
-          <div className="hidden items-center gap-7 md:flex">
-            <a href={contact.instagramHref} target="_blank" rel="noopener noreferrer" className="focus-ring flex items-center gap-1.5 rounded-md text-sm font-medium text-[#5c6b4a] transition hover:text-[#d4a5a5]">
+          <div data-header-secondary className="hidden items-center gap-7 md:flex">
+            <a href={contact.instagramHref} target="_blank" rel="noopener noreferrer" className="focus-ring flex items-center gap-1.5 rounded-md text-sm font-medium text-[#5c6b4a] transition hover:text-[#9f5963]">
               <InstagramIcon />
               <span>shirvaperah</span>
             </a>
@@ -103,20 +128,20 @@ export default function SiteHeader() {
             </a>
           </div>
 
-          <button type="button" className="focus-ring grid h-11 w-11 place-items-center rounded-full text-[#2c3e1f] md:hidden" aria-label={menuOpen ? 'סגירת תפריט' : 'פתיחת תפריט'} aria-expanded={menuOpen} aria-controls="mobile-contact-menu" onClick={() => setMenuOpen((current) => !current)}>
+          <button ref={menuButtonRef} type="button" className="focus-ring grid h-11 w-11 place-items-center rounded-full text-[#2c3e1f] md:hidden" aria-label={menuOpen ? 'סגירת תפריט' : 'פתיחת תפריט'} aria-expanded={menuOpen} aria-controls="mobile-contact-menu" onClick={() => setMenuOpen((current) => !current)}>
             <MenuIcon open={menuOpen} />
           </button>
         </div>
 
-        <a href="/" onClick={scrollToTop} className="focus-ring rounded-full" aria-label="שיר ופרח — דף הבית">
+        <a data-header-secondary href="/" onClick={scrollToTop} className="focus-ring rounded-full" aria-label="שיר ופרח — דף הבית">
           <img src={logo} alt="שיר ופרח" className="h-16 w-16 rounded-full border border-stone-200 object-cover shadow-sm transition hover:scale-105 md:h-20 md:w-20" />
         </a>
         </div>
       </header>
 
-      <div id="mobile-contact-menu" aria-hidden={!menuOpen} className={`fixed inset-0 z-40 min-h-[100dvh] bg-white/95 px-6 pt-32 backdrop-blur-md transition-all duration-300 md:hidden ${menuOpen ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-4 opacity-0'}`}>
-        <nav aria-label="אפשרויות יצירת קשר" className={`flex flex-col gap-6 text-center transition-all delay-75 duration-300 ${menuOpen ? 'translate-y-0 opacity-100' : '-translate-y-3 opacity-0'}`}>
-          <a href={contact.instagramHref} target="_blank" rel="noopener noreferrer" className="focus-ring rounded-lg py-2 text-xl font-medium" onClick={() => setMenuOpen(false)}>
+      {menuOpen ? <div ref={menuDialogRef} id="mobile-contact-menu" role="dialog" aria-modal="true" aria-label="אפשרויות יצירת קשר" className="fixed inset-0 z-40 min-h-[100dvh] bg-white/95 px-6 pt-32 backdrop-blur-md md:hidden">
+        <nav aria-label="אפשרויות יצירת קשר" className="flex flex-col gap-6 text-center">
+          <a ref={firstMenuLinkRef} href={contact.instagramHref} target="_blank" rel="noopener noreferrer" className="focus-ring rounded-lg py-2 text-xl font-medium" onClick={() => setMenuOpen(false)}>
             Instagram
           </a>
           <a href={contact.phoneHref} className="focus-ring rounded-lg py-2 text-xl font-medium" dir="ltr" onClick={() => setMenuOpen(false)}>
@@ -127,7 +152,7 @@ export default function SiteHeader() {
             וואטסאפ
           </a>
         </nav>
-      </div>
+      </div> : null}
     </>
   );
 }

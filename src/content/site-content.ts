@@ -42,42 +42,66 @@ export const hero = {
   images: [hero01, hero02, hero03, hero04, hero05],
 };
 
-const bridalBouquetImages = [bouquet01, bouquet02, bouquet03, bouquet04];
-const generalGalleryImages = [hero01, hero02, hero03, hero04, hero05];
-const tableArrangementImages = [table01, table02, table03, table04, table05, table06];
-const floralDesignImages = [design01, design02, design03, design04];
+const galleryImage = (src: string, alt: string) => ({ src, alt });
+const bridalBouquetGallery = [
+  galleryImage(bouquet01, 'זר כלה לבן ועדין עם פרחים ירוקים'),
+  galleryImage(bouquet02, 'זר כלה צבעוני בגווני ורוד, כתום ולבן'),
+  galleryImage(bouquet03, 'זר כלה טבעי מפרחים לבנים ועלווה ירוקה'),
+  galleryImage(bouquet04, 'זר כלה עשיר בגווני ורוד וסגול'),
+];
+const generalGallery = [
+  galleryImage(hero01, 'זר פרחים צבעוני בעבודת יד'),
+  galleryImage(hero02, 'זר פרחים טבעי בגוונים בהירים'),
+  galleryImage(hero03, 'סידור פרחים צבעוני ועשיר'),
+  galleryImage(hero04, 'זר פרחים עונתי בגווני ורוד וכתום'),
+  galleryImage(hero05, 'פרחים טריים שזורים בסגנון טבעי'),
+];
+const tableArrangementGallery = [
+  galleryImage(table01, 'סידור פרחים חגיגי במרכז שולחן'),
+  galleryImage(table02, 'עיצוב שולחן עם פרחים צבעוניים'),
+  galleryImage(table03, 'סידור פרחים עדין לאירוע'),
+  galleryImage(table04, 'מרכז שולחן טבעי עם פרחים ועלווה'),
+  galleryImage(table05, 'שולחן אירוח מעוצב בפרחים טריים'),
+  galleryImage(table06, 'סידור שולחן חגיגי בגוונים בהירים'),
+];
+const floralDesignGallery = [
+  galleryImage(design01, 'עיצוב פרחים צבעוני לאירוע'),
+  galleryImage(design02, 'מיצב פרחים טבעי בגוונים רכים'),
+  galleryImage(design03, 'עיצוב פרחוני עשיר עם עלווה ירוקה'),
+  galleryImage(design04, 'סידור פרחים יצירתי בגוונים עונתיים'),
+];
 
 export const galleryCategories = [
   {
     id: 'all',
     label: 'הכל',
-    images: [...bridalBouquetImages, ...generalGalleryImages, ...tableArrangementImages, ...floralDesignImages],
+    images: [...bridalBouquetGallery, ...generalGallery, ...tableArrangementGallery, ...floralDesignGallery],
   },
   {
     id: 'bridal-bouquets',
     label: 'זרי כלה',
-    images: bridalBouquetImages,
+    images: bridalBouquetGallery,
   },
   {
     id: 'tables',
     label: 'סידורי שולחן',
-    images: tableArrangementImages,
+    images: tableArrangementGallery,
   },
   {
     id: 'floral-designs',
     label: 'עיצובי פרחים',
-    images: floralDesignImages,
+    images: floralDesignGallery,
   },
 ];
 
 export const services = [
   {
-    title: 'סידורי פרחים לאירועים',
-    description: 'עיצוב פרחוני מרהיב לחתונות, בר/בת מצווה, אירועים עסקיים ומסיבות פרטיות',
-  },
-  {
     title: 'חתונות',
     description: 'עיצוב פרחוני לחתונות באווירה טבעית וססגונית, מהחופה ועד סידורי השולחן והפרטים הקטנים.',
+  },
+  {
+    title: 'סידורי פרחים לאירועים',
+    description: 'עיצוב פרחוני מרהיב לחתונות, בר/בת מצווה, אירועים עסקיים ומסיבות פרטיות',
   },
   {
     title: 'סדנאות שזירה',

@@ -64,7 +64,7 @@
 
 @layer utilities {
   .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d09296] focus-visible:ring-offset-2 focus-visible:ring-offset-[#faf9f6];
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9f5963] focus-visible:ring-offset-2 focus-visible:ring-offset-[#faf9f6];
   }
 
   .no-scrollbar {

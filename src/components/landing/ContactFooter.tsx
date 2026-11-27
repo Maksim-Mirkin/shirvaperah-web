@@ -28,12 +28,12 @@ export default function ContactFooter() {
             <a href={contact.phoneHref} className="focus-ring group block rounded-2xl bg-[#faf9f6] p-6 text-center transition hover:-translate-y-1 hover:shadow-lg">
               <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#d4a5a5]/15 text-[#b87980]"><ContactIcon type="phone" /></div>
               <h3 className="mt-4 font-bold text-[#2c3e1f]">טלפון</h3>
-              <span className="mt-1 inline-block text-[#5c6b4a] transition group-hover:text-[#d4a5a5]" dir="ltr">{contact.phoneDisplay}</span>
+              <span className="mt-1 inline-block text-[#5c6b4a] transition group-hover:text-[#9f5963]" dir="ltr">{contact.phoneDisplay}</span>
             </a>
             <a href={contact.instagramHref} target="_blank" rel="noopener noreferrer" className="focus-ring group block rounded-2xl bg-[#faf9f6] p-6 text-center transition hover:-translate-y-1 hover:shadow-lg">
               <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#d4a5a5]/15 text-[#b87980]"><ContactIcon type="instagram" /></div>
               <h3 className="mt-4 font-bold text-[#2c3e1f]">אינסטגרם</h3>
-              <span className="mt-1 inline-block text-[#5c6b4a] transition group-hover:text-[#d4a5a5]">{contact.instagramDisplay}</span>
+              <span className="mt-1 inline-block text-[#5c6b4a] transition group-hover:text-[#9f5963]">{contact.instagramDisplay}</span>
             </a>
             <div className="rounded-2xl bg-[#faf9f6] p-6 text-center transition hover:-translate-y-1 hover:shadow-lg">
               <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#d4a5a5]/15 text-[#b87980]"><ContactIcon type="area" /></div>

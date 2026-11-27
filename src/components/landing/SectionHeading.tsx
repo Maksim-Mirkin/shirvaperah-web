@@ -5,9 +5,11 @@ type SectionHeadingProps = {
   title: string;
   description?: ReactNode;
   align?: 'center' | 'right';
+  titleId?: string;
+  titleTabIndex?: -1;
 };
 
-export default function SectionHeading({ eyebrow, title, description, align = 'center' }: SectionHeadingProps) {
+export default function SectionHeading({ eyebrow, title, description, align = 'center', titleId, titleTabIndex }: SectionHeadingProps) {
   const alignment = align === 'right' ? 'text-right' : 'text-center';
   const descriptionWidth = align === 'right' ? '' : 'mx-auto max-w-2xl';
   const accentPosition = align === 'right' ? '' : 'mx-auto';
@@ -15,7 +17,7 @@ export default function SectionHeading({ eyebrow, title, description, align = 'c
   return (
     <div className={alignment}>
       <span className="text-sm font-semibold tracking-[0.14em] text-[#9f5963]">{eyebrow}</span>
-      <h2 className="mt-2 text-4xl font-bold text-[#2c3e1f] sm:text-5xl">{title}</h2>
+      <h2 id={titleId} tabIndex={titleTabIndex} className="mt-2 text-4xl font-bold text-[#2c3e1f] sm:text-5xl">{title}</h2>
       <div className={`mt-5 h-1.5 w-16 rounded-full bg-[#d4a5a5] ${accentPosition}`} aria-hidden="true" />
       {description ? <p className={`mt-6 text-lg leading-relaxed text-[#5c6b4a] ${descriptionWidth}`}>{description}</p> : null}
     </div>
