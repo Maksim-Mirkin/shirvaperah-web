@@ -2,7 +2,7 @@
 
 ## Status
 
-In progress — production and custom domain are live; rollback drill remains
+Complete — production, custom domain, and rollback access verified
 
 ## Preconditions
 
@@ -93,12 +93,15 @@ In progress — production and custom domain are live; rollback drill remains
 - [x] Run `npm run build`.
 - [x] Verify the public Pages URL on mobile and desktop.
 - [x] Verify feature branches do not trigger Pages deployments.
-- [ ] Verify rollback access and document the tested procedure.
+- [x] Verify rollback access and document the tested procedure.
+  - Result (2026-11-28): The owner opened the rollback confirmation for a previous successful production deployment in the owner-controlled Cloudflare account. The dialog confirmed that the rollback would replace production for `shirvaperah-web.pages.dev`, `shirvaperah.co.il`, and `www.shirvaperah.co.il`. The owner cancelled before confirmation, so production was not changed.
+  - Recovery procedure: In Cloudflare Workers & Pages, open the `shirvaperah-web` project, select **Deployments**, choose a previous successful production deployment, and select **Rollback to this deployment**. Verify the Pages and custom-domain URLs, then reconcile `main` with a revert or corrective pull request when the rollback responds to a real faulty release.
+  - Decision: A live rollback drill was not performed because access and the exact production impact were confirmed without unnecessarily replacing the working public deployment.
 - [x] Review `docs/project/ARCHITECTURE.md` and update the production-delivery architecture.
 
 ## Completion
 
-- [ ] All approved tasks and acceptance criteria are complete.
+- [x] All approved tasks and acceptance criteria are complete.
 - [x] Required CI checks pass.
 - [x] Pull request is ready for owner review.
 - Architecture impact: Updated `docs/project/ARCHITECTURE.md` to record Cloudflare Pages as the production static-delivery platform.
