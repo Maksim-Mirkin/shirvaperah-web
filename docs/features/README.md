@@ -1,5 +1,7 @@
 # Feature specifications
 
+Новые идеи и возможные следующие направления сначала фиксируются в [`docs/project/ROADMAP.md`](../project/ROADMAP.md). Запись в roadmap не означает утверждение фичи и не разрешает реализацию до завершения требований и дизайна.
+
 Create one kebab-case directory per substantive feature:
 
 ```text
