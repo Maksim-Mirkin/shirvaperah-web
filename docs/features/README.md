@@ -1,5 +1,7 @@
 # Feature specifications
 
+Необязательные мысли о возможных фичах записываются в [`docs/project/IDEAS.md`](../project/IDEAS.md). Когда владелец выбирает идею для проработки, она переносится в отдельную спецификацию фичи.
+
 Create one kebab-case directory per substantive feature:
 
 ```text
