@@ -1,6 +1,6 @@
 # Feature specifications
 
-Новые идеи и возможные следующие направления сначала фиксируются в [`docs/project/ROADMAP.md`](../project/ROADMAP.md). Запись в roadmap не означает утверждение фичи и не разрешает реализацию до завершения требований и дизайна.
+Необязательные мысли о возможных фичах записываются в [`docs/project/IDEAS.md`](../project/IDEAS.md). Когда владелец выбирает идею для проработки, она переносится в отдельную спецификацию фичи.
 
 Create one kebab-case directory per substantive feature:
 
